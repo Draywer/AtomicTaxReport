@@ -7,22 +7,23 @@ import java.util.Random;
 import java.util.concurrent.atomic.LongAdder;
 
 public class Shop extends Thread {
-    private static LongAdder TOTAL = new LongAdder();
     private List<Integer> bills;
     private int maxValue;
+    private TaxService taxService;
 
-    public Shop(int maxValue) {
+    public Shop(TaxService taxService, int maxValue) {
         bills = new ArrayList<>();
         this.maxValue = maxValue;
+        this.taxService = taxService;
         fillListBill();
     }
 
-    public static LongAdder getTOTAL() {
-        return TOTAL;
+    public TaxService getTaxService() {
+        return taxService;
     }
 
-    public static void setTOTAL(LongAdder TOTAL) {
-        Shop.TOTAL = TOTAL;
+    public void setTaxService(TaxService taxService) {
+        this.taxService = taxService;
     }
 
     public int getMaxValue() {
@@ -52,7 +53,7 @@ public class Shop extends Thread {
     public void run() {
         for (Integer integer : bills
         ) {
-            TOTAL.add(integer);
+            taxService.getAdder().add(integer);
         }
     }
 }

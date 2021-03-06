@@ -6,9 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        Shop shop1 = new Shop(10);
-        Shop shop2 = new Shop(10);
-        Shop shop3 = new Shop(10);
+        TaxService taxService = new TaxService();
+        Shop shop1 = new Shop(taxService, 10);
+        Shop shop2 = new Shop(taxService, 10);
+        Shop shop3 = new Shop(taxService, 10);
 
         ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
@@ -17,7 +18,7 @@ public class Main {
         service.submit(shop3);
         service.awaitTermination(3, TimeUnit.SECONDS);
 
-        System.out.println("Общая выручка: " + Shop.getTOTAL().sum());
+        System.out.println("Общая выручка: " + taxService.getAdder().sum());
 
         service.shutdown();
 
